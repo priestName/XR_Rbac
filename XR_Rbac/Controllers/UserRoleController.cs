@@ -67,8 +67,10 @@ namespace XR_Rbac.Controllers
                 return Json(new { code = 400 });
             }
             var user = rb.Users.FirstOrDefault(r => r.ID == userrole.userid);
+
             var role = new Role { ID = userrole.roleid };
             rb.Roles.Attach(role);
+
             var uproleid = new Role { ID = userrole.Uproleid };
             rb.Roles.Attach(uproleid);
             user.Roles.Remove(role);
