@@ -1,0 +1,74 @@
+﻿@model IEnumerable<XR_Rbac.Models.Module>
+@{
+    ViewBag.Title = "模型管理";
+}
+
+<form id="search">
+    <input type="text" placeholder="名称" name="Name"/>
+    <input type="text" placeholder="控制器" name="Controller"/>
+    <input type="button" value="查询" id="set"/>
+</form><br/>
+<a href="#" id="create">增加</a>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>控制器</th>
+        <th>操作</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Name</td>
+            <td>@item.Controller</td>
+            <td style="width: 100px;">
+                <a class="edit" href="@Url.Action("Edit",new { id = item.ID })">编辑</a>
+                @Html.ActionLink("删除", "delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+@section Script
+{
+    <script>
+        $("#create").click(function() {
+                layer.open({
+                    type: 2,
+                    title: '模块管理',
+                    shade: false,
+                    shadeClose: true,
+                    area: ['600px', '330px'],
+                    content: '@Url.Action("Create")'
+            });
+        });
+
+        $(".edit").click(function (event) {
+            var $this = $(this);
+            layer.open({
+                type: 2,
+                title: '模块管理',
+                shade: false,
+                shadeClose: true,
+                area: ['600px', '380px'],
+                content: $this.attr("href")
+            });
+            event.preventDefault();
+        });
+
+            $("#set").click(function () {
+                var name = $("input[name=Name]").val();
+                var cont = $("input[name=Controller]").val();
+                if (name === "" || cont === "") {
+                    alert("不能为空");
+                    return;
+                }
+                @*$.ajax({
+                    url: '@Url.Action("Index")',
+                    type: 'post',
+                    data: $("form").serialize()
+                });*@
+                window.location.href = "/Module/Index?Name=" + name + "&&Controller=" + cont;
+            });
+    </script>
+}

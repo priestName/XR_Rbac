@@ -1,0 +1,67 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RBAC Demo - 注册</title>
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<div id="login">
+    <span class="form-title">注册</span>
+    <form action="#" method="post">
+        <div class="form-item">
+            <label>账&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
+            <input type="text" name="UserName" />
+        </div>
+        <div class="form-item">
+            <label>密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+            <input type="password" name="Password" />
+        </div>
+        <div class="form-item">
+            <label>确认密码:</label>
+            <input type="password" name="Passwords" />
+        </div>
+        <input class="btn" type="button" value="登陆" />
+    </form>
+</div>
+<script>
+    $(function () {
+        $(".btn").click(function () {
+            var user = $("input[name=UserName]").val();
+            var psw = $("input[name=Password]").val();
+            var pswtow = $("input[name=Passwords]").val();
+            if (user === "" || psw === "" || pswtow==="") {
+                alert("不能为空");
+                return;
+            }
+            if (psw !== pswtow) {
+                alert("两次输入密码必须相同");
+                return;
+            }
+            $.ajax({
+                url: '@Url.Action("AddUser")',
+                type: 'post',
+                data: $("form").serialize(),
+                success: function(res) {
+                    if (res.code === 200) {
+                        alert("注册成功");
+                        window.location = '@Url.Action("Index", "Login")';
+                    } else if (res.code === 400) {
+                        alert("非法参数");
+                    } else {
+                        alert("注册失败");
+                    }
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>

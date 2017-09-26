@@ -1,0 +1,58 @@
+﻿@model IEnumerable<XR_Rbac.Models.User>
+@{
+    ViewBag.Title = "用户管理";
+}
+
+<form id="search">
+    <input type="text" placeholder="用户名称" name="Name" />
+    <input type="button" value="查询" id="set" />
+</form><br />
+<table>
+    <tr>
+        <th>ID</th>
+        <th>用户名称</th>
+        <th>用户密码</th>
+        <th>操作</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.UserName</td>
+            <td>@item.Password</td>
+            <td style="width: 100px;">
+                <a class="edit" href="@Url.Action("Edit",new { id = item.ID })">编辑</a>
+                @Html.ActionLink("删除", "delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+@section Script
+{
+    <script>
+        $("#create").click(function() {
+            layer.open({
+                type: 2,
+                title: '角色管理',
+                shade: false,
+                shadeClose: true,
+                area: ['600px', '330px'],
+                content: '@Url.Action("Create")'
+            });
+        });
+
+        $(".edit").click(function (event) {
+            var $this = $(this);
+            layer.open({
+                type: 2,
+                title: '角色管理',
+                shade: false,
+                shadeClose: true,
+                area: ['600px', '380px'],
+                content: $this.attr("href")
+            });
+            event.preventDefault();
+        });
+    </script>
+}
+
